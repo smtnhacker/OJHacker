@@ -177,11 +177,8 @@ async def penge_tc(ctx):
     !ptc <LE/PA/MP><problem #>
   """
 
-  try:
-    msg = ctx.message.content
-    author = ctx.message.author
-  except Exception:
-    print("Still error :(")
+  msg = ctx.message.content
+  author = ctx.message.author
 
   inp = "".join(msg.split("!penge_tc ", 1)).split(maxsplit=1)
   
