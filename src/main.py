@@ -329,23 +329,10 @@ async def has_role(ctx, user, role):
     return True
   return False
 
-async def isadmin(ctx, user):
-  """Returns True if the user is an admin."""
-
-  for role in cnst.ADMIN_ROLES:
-    if await has_role(ctx, user, role):
-      return True
-  await ctx.channel.send("Command reserved for moderators.")
-  return False
-
 @bot.command()
+@commands.has_any_role(*cnst.ADMIN_ROLES)
 async def delete_tc(ctx):
   """Deletes the """
-
-  # Check if the user has perms
-  auth = ctx.message.author
-  if not await isadmin(ctx,auth):
-    return
 
   msg = ctx.message.content
   inp = "".join(msg.split("!delete_tc ", 1)).split(maxsplit=1)
@@ -367,13 +354,9 @@ async def delete_tc(ctx):
   await ctx.channel.send(OJ_msg)
 
 @bot.command()
+@commands.has_any_role(*cnst.ADMIN_ROLES)
 async def delete_problem(ctx):
   """UNDER CONSTRUCTION (kapag puno na database)"""
-
-  # Check if the user has perms
-  auth = ctx.message.author
-  if not await isadmin(ctx,auth):
-    return
   
   msg = ctx.message.content
   inp = "".join(msg.split("!delete_problem ", 1)).split(maxsplit=1)
@@ -401,13 +384,9 @@ async def delete_problem(ctx):
     return
 
 @bot.command()
+@commands.has_any_role(*cnst.ADMIN_ROLES)
 async def HARD_RESET(ctx):
   """DELETES EVERYTHING. Use with caution."""
-
-  # Check if the user has perms
-  auth = ctx.message.author
-  if not await isadmin(ctx,auth):
-    return
   
   await ctx.channel.send(cnst.WIPE_MSG.upper())
   resp, msg = await aux.wait_response(bot,ctx,auth)
@@ -420,17 +399,13 @@ async def HARD_RESET(ctx):
   return
 
 @bot.command()
+@commands.has_any_role(*cnst.ADMIN_ROLES)
 async def PRINT_DB(ctx):
   """Sends all the stored test cases in a problem
   
   Syntax:
   !PRINT_DB <LE/PA/MP><problem #>
   """
-
-  # Check if the user has perms
-  auth = ctx.message.author
-  if not await isadmin(ctx,auth):
-    return
 
   msg = ctx.message.content
   inp = "".join(msg.split("!PRINT_DB ", 1)).split(maxsplit=1)
@@ -448,16 +423,12 @@ async def PRINT_DB(ctx):
     await aux.print_tc(ctx, typ, idx, tcs, ctx.channel.send)
 
 @bot.command()
+@commands.has_any_role(*cnst.ADMIN_ROLES)
 async def PRINT_ALL(ctx):
   """Prints all the stored test cases
   
   Use with caution as large amount of data might be sent.
   """
-
-  # Check if the user has perms
-  auth = ctx.message.author
-  if not await isadmin(ctx,auth):
-    return
 
   did_printed_smtn = False
   for typ in cnst.VALID_TYPES:
