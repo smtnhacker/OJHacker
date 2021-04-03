@@ -296,15 +296,15 @@ async def tcs_nga(ctx):
   output = [(tcs[3], tcs[0]) for tcs in all_tc]
 
   embed=discord.Embed(
-    title="Available Testcases:", 
-    description="~ for " + str(typ) + str(idx), 
+    title="Available Testcases:",
+    description="~ for " + str(typ) + str(idx),
     color=0x709bff
   )
   embed.set_author(name="OJ Hacker")
 
-  for cur_tc in range(len(output)):
-    cur_title = str(cur_tc + 1) + ". UID: " + str(output[cur_tc][0])
-    cur_label = "Label: " + str(output[cur_tc][1])
+  for cur_tc, cur_output in enumerate(output):
+    cur_title = str(cur_tc + 1) + ". UID: " + str(cur_output[0])
+    cur_label = "Label: " + str(cur_output[1])
     embed.add_field(name=cur_title, value=cur_label, inline=False)
 
   await ctx.channel.send(embed=embed)
@@ -357,7 +357,7 @@ async def delete_tc(ctx):
 @commands.has_any_role(*cnst.ADMIN_ROLES)
 async def delete_problem(ctx):
   """UNDER CONSTRUCTION (kapag puno na database)"""
-  
+  auth = ctx.message.author
   msg = ctx.message.content
   inp = "".join(msg.split("!delete_problem ", 1)).split(maxsplit=1)
 
@@ -387,7 +387,8 @@ async def delete_problem(ctx):
 @commands.has_any_role(*cnst.ADMIN_ROLES)
 async def HARD_RESET(ctx):
   """DELETES EVERYTHING. Use with caution."""
-  
+
+  auth = ctx.message.author
   await ctx.channel.send(cnst.WIPE_MSG.upper())
   resp, msg = await aux.wait_response(bot,ctx,auth)
 
