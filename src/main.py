@@ -18,8 +18,11 @@ client = discord.Client()
 @bot.event
 async def on_message(msg):
 
-  class miniContext:
-    """A discord.ext.commands.context.Context but with only message and channel as atrbitutes"""
+  class MiniContext:
+    """
+    A discord.ext.commands.context.Context but with only message and channel as atrbitutes
+    """
+
     def __init__(self, x):
       self.message = x
       self.channel = x.channel
@@ -27,7 +30,7 @@ async def on_message(msg):
   if msg.content.startswith('!ptc'):
     try:
       msg.content = "!penge_tc" + msg.content[4:]
-      ctx = miniContext(msg)
+      ctx = MiniContext(msg)
       await penge_tc(ctx)
       return
     except:
@@ -35,7 +38,7 @@ async def on_message(msg):
   elif msg.content.startswith('!pr'):
     try:
       msg.content = "!penge_random" + msg.content[3:]
-      ctx = miniContext(msg)
+      ctx = MiniContext(msg)
       await penge_random(ctx)
       return
     except:
@@ -43,7 +46,7 @@ async def on_message(msg):
   elif msg.content.startswith('!skl'):
     try:
       msg.content = "!share_ko_lang" + msg.content[4:]
-      ctx = miniContext(msg)
+      ctx = MiniContext(msg)
       await share_ko_lang(ctx)
       return
     except:
@@ -51,7 +54,7 @@ async def on_message(msg):
   elif msg.content.startswith('!it'):
     try:
       msg.content = "!insert_tc" + msg.content[3:]
-      ctx = miniContext(msg)
+      ctx = MiniContext(msg)
       await insert_tc(ctx)
       return
     except:
@@ -59,7 +62,7 @@ async def on_message(msg):
   elif msg.content.startswith('!tn'):
     try:
       msg.content = "!tcs_nga" + msg.content[3:]
-      ctx = miniContext(msg)
+      ctx = MiniContext(msg)
       await tcs_nga(ctx)
       return
     except:
@@ -95,29 +98,35 @@ def non():
 PARSERS = {
   "LE" : [],
   "PA" : [],
-  "MP" : []
+  "MP" : [],
 }
 
 RANDOMERS = {
-  "LE" : [non,
-          non,
-          non,
-          non,
-          non,
-          non,
-          non,
-          gen.genLE07,
-          gen.genLE08,
-          gen.genLE09],
-  "PA" : [non,
-          non,
-          non,
-          non,
-          gen.genPA04,
-          gen.genPA05,
-          gen.genPA06],
-  "MP" : [non,
-          non]
+  "LE" : [
+    non,
+    non,
+    non,
+    non,
+    non,
+    non,
+    non,
+    gen.genLE07,
+    gen.genLE08,
+    gen.genLE09
+  ],
+  "PA" : [
+    non,
+    non,
+    non,
+    non,
+    gen.genPA04,
+    gen.genPA05,
+    gen.genPA06
+  ],
+  "MP" : [
+    non,
+    non
+  ],
 }
 
 # ======= FOR INSERTING TEST CASES =========== #
@@ -310,7 +319,7 @@ async def has_role(ctx, user, role):
   
   Parameter
   -----------------
-  ctx : miniContext
+  ctx : MiniContext
     Contains relevant discord-related information
   user : abc.User
     Contains information on the user
