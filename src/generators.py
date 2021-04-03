@@ -5,7 +5,7 @@ randNames = [
     'William', 'Elijah', 'James', 'Benjamin', 'Lucas',
     'Mason', 'Ethan', 'Alexander', 'Henry', 'Jacob',
     'Michael', 'Daniel', 'Logan', 'Jackson', 'Sebastian',
-    'Jack', 'Aiden', 'Owen','Samuel', 'Matthew',
+    'Jack', 'Aiden', 'Owen', 'Samuel', 'Matthew',
     'Joseph', 'Levi', 'Mateo', 'David', 'John',
     'Wyatt', 'Carter', 'Julian', 'Luke', 'Grayson',
     'Isaac', 'Jayden', 'Theodore', 'Gabriel', 'Anthony',
@@ -71,7 +71,7 @@ def genPA04():
   genLST.append(laps)
   for i in range(people):
     collectedNames.append(randNames[i])
-  forms = ['sec','min_sec','hour_min_sec']
+  forms = ['sec', 'min_sec', 'hour_min_sec']
   for i in range(people):
     for j in range(laps):
       randF, nums = random.randint(1,3), 0
@@ -117,7 +117,7 @@ def genPA06():
   return (TC_LST, TC_ANS)
 
 def genLE08():
-  DIRECTIONS = ['UP','DOWN','LEFT','RIGHT']
+  DIRECTIONS = ['UP', 'DOWN', 'LEFT', ' RIGHT']
   LST = []
   TCS = random.randint(2,20)
   LST.append(str(TCS))
@@ -185,7 +185,7 @@ def genLE09():
             sa += i
     return sa
   def stringGen(lnta):
-      string_a, specs = "", ['*','#']
+      string_a, specs = "", ['*', '#']
       for j in range(lnta):
           rd = random.randint(1,4)
           if rd == 1:
@@ -201,7 +201,7 @@ def genLE09():
                   string_a += chr(random.randint(97,122))
       return string_a
   TCS = random.randint(2,20)
-  LST, specs = [str(TCS)], ['*','#']
+  LST, specs = [str(TCS)], ['*', '#']
   for i in range(TCS):
     ans, qt = random.randint(1,2), random.randint(1,7)
     if qt == 3:
