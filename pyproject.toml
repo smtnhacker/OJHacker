@@ -1,5 +1,6 @@
 [tool.poetry]
 name = "ojhacker"
+description = "Discord Bot for CS 12 OJ Programming Problems"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
