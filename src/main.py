@@ -10,10 +10,11 @@ import constants as cnst
 import auxi as aux
 import images
 
-bot = commands.Bot(command_prefix = "!")
+bot = commands.Bot(command_prefix="!")
 client = discord.Client()
 
 # =========== SHORTHAND COMMANDS =========== #
+
 
 @bot.event
 async def on_message(msg):
@@ -67,42 +68,49 @@ async def on_message(msg):
       return
     except Exception:
       print(f"Error at trying !tn\n{ctx}")
- 
+
   await bot.process_commands(msg)
+
 
 @bot.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(bot))
-  await bot.change_presence(activity = discord.Activity(type = discord.ActivityType.listening, name="!start"))
+  await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="!start"))
+
 
 @bot.command()
 async def join(ctx):
   channel = ctx.author.voice.channel
   await channel.connect()
 
+
 @bot.command()
 async def leave(ctx):
   await ctx.voice_client.disconnect()
 
+
 @bot.command()
 async def start(ctx):
   """Shows the instructions. Try it!"""
-  msg = await ctx.channel.send(file = discord.File('hacker.png'))
-  emojs = ['🧠', '👀', '🏆', '🥺', '🤟', '🎓'] 
-  for zzz in emojs: await msg.add_reaction(zzz)
+  msg = await ctx.channel.send(file=discord.File('hacker.png'))
+  emojs = ['🧠', '👀', '🏆', '🥺', '🤟', '🎓']
+  for zzz in emojs:
+    await msg.add_reaction(zzz)
   await aux.show_instructions(ctx)
+
 
 def non():
   return ("Cannot generate random test case. :((", "pogi si gab, pero hakdog.")
 
+
 PARSERS = {
-  "LE" : [],
-  "PA" : [],
-  "MP" : [],
+  "LE": [],
+  "PA": [],
+  "MP": [],
 }
 
 RANDOMERS = {
-  "LE" : [
+  "LE": [
     non,
     non,
     non,
@@ -114,7 +122,7 @@ RANDOMERS = {
     gen.genLE08,
     gen.genLE09
   ],
-  "PA" : [
+  "PA": [
     non,
     non,
     non,
@@ -123,7 +131,7 @@ RANDOMERS = {
     gen.genPA05,
     gen.genPA06
   ],
-  "MP" : [
+  "MP": [
     non,
     non
   ],
@@ -133,7 +141,7 @@ RANDOMERS = {
 @bot.command()
 async def insert_tc(ctx):
   """Inserts a new test case into the system.
-  
+
   Syntax:
     !insert_tc <LE/PA/MP><problem #> <test case label>
     !it <LE/PA/MP><problem #> <test case label>
@@ -143,24 +151,24 @@ async def insert_tc(ctx):
   auth = ctx.message.author
 
   inp = "".join(msg.split("!insert_tc ", 1)).split(maxsplit=1)
-  
-  is_ok, typ, idx, name = await aux.get_inputs(ctx,inp)
+
+  is_ok, typ, idx, name = await aux.get_inputs(ctx, inp)
 
   if not is_ok:
     return
 
   await ctx.channel.send("Please enter your input (w/o formatting)")
-  tc_input, _ = await aux.wait_response(bot,ctx,auth)
+  tc_input, _ = await aux.wait_response(bot, ctx, auth)
 
   await ctx.channel.send("Please enter your output (w/o formatting)")
-  tc_output, _ = await aux.wait_response(bot,ctx,auth)
+  tc_output, _ = await aux.wait_response(bot, ctx, auth)
 
   confirm_msg = await ctx.channel.send("Upload the testcase? (thumbs up)")
   await confirm_msg.add_reaction(cnst.THUMBS_UP_EMOJI)
 
   tc_yes = await aux.wait_for_thumbs_up(ctx, bot)
   uid = tc.get_id()
-  
+
   if tc_yes:
     tc.insert_testcase(uid, typ, idx, name, tc_input, tc_output)
     await ctx.channel.send(f"Testcase with UID {uid} added. Thanks!")
@@ -171,7 +179,7 @@ async def insert_tc(ctx):
 @bot.command()
 async def penge_tc(ctx):
   """DMs all the stored test cases for a certain problem.
-  
+
   Syntax:
     !penge_tc <LE/PA/MP><problem #>
     !ptc <LE/PA/MP><problem #>
@@ -181,8 +189,8 @@ async def penge_tc(ctx):
   author = ctx.message.author
 
   inp = "".join(msg.split("!penge_tc ", 1)).split(maxsplit=1)
-  
-  is_ok, typ, idx, name = await aux.get_inputs(ctx,inp)
+
+  is_ok, typ, idx, name = await aux.get_inputs(ctx, inp)
 
   if not is_ok:
     return
@@ -204,7 +212,7 @@ async def penge_tc(ctx):
 @bot.command()
 async def penge_random(ctx):
   """DMs a randomly generated test case with the correct output.
-  
+
   Syntax:
     !penge_random <LE/PA/MP><problem #>
     !pr <LE/PA/MP><problem #>
@@ -214,13 +222,13 @@ async def penge_random(ctx):
   author = ctx.message.author
 
   inp = "".join(msg.split("!penge_random ", 1)).split(maxsplit=1)
-  
-  is_ok, typ, idx, name = await aux.get_inputs(ctx,inp)
+
+  is_ok, typ, idx, name = await aux.get_inputs(ctx, inp)
 
   if not is_ok:
     return
- 
-  await author.create_dm() 
+
+  await author.create_dm()
   OJ_msg = "DM Sent!"
   rand, rand2 = non()
   try:

@@ -9,46 +9,48 @@ import time
 
 import constants as cnst
 
+
 async def show_instructions(ctx):
   """Prints the instructions to the channel using an embed"""
 
-  embed=discord.Embed(
-    title="List of Commands:", 
-    description="~ use this to access its features", 
+  embed = discord.Embed(
+    title="List of Commands:",
+    description="~ use this to access its features",
     color=0x709bff
   )
   embed.set_author(name="OJ Hacker")
   embed.add_field(
     name="1. !insert_tc (or !it) {LE/PA/MP}{number} {label}",
-    value="- insert a test case for a specific problem", 
+    value="- insert a test case for a specific problem",
     inline=False
   )
   embed.add_field(
-    name="2. !penge_tc (or !ptc) {LE/PA/MP}{number}", 
-    value="- get all testcases for a specific problem", 
+    name="2. !penge_tc (or !ptc) {LE/PA/MP}{number}",
+    value="- get all testcases for a specific problem",
     inline=False
   )
   embed.add_field(
-    name="3. !penge_random (or !pr) {LE/PA/MP}{number}", 
-    value="- get a randomly generated testcase for a specific problem", 
+    name="3. !penge_random (or !pr) {LE/PA/MP}{number}",
+    value="- get a randomly generated testcase for a specific problem",
     inline=False
   )
   embed.add_field(
-    name="4. !tcs_nga (or !tn) {LE/PA/MP}{number}", 
-    value="- shows the list of stored testcases for a specific problem", 
+    name="4. !tcs_nga (or !tn) {LE/PA/MP}{number}",
+    value="- shows the list of stored testcases for a specific problem",
     inline=False
   )
   embed.add_field(
-    name="5. !share_ko_lang (or !skl) {UID}", 
-    value="- shows the test case with given uid", 
+    name="5. !share_ko_lang (or !skl) {UID}",
+    value="- shows the test case with given uid",
     inline=False
   )
   embed.add_field(
-    name="Example:", 
-    value="!insert_tc PA05 test", 
+    name="Example:",
+    value="!insert_tc PA05 test",
     inline=False
   )
   await ctx.channel.send(embed=embed)
+
 
 async def print_tc(ctx, typ, idx, tcs, op):
   """Formats the testcase and sends it to the right reciever.
@@ -56,7 +58,7 @@ async def print_tc(ctx, typ, idx, tcs, op):
   Given a valid test case, this function formats the testcase
   into a single string of readable form. It then sends it
   to the appropriate reciever via op.
-  
+
   Parameters
   -------------
   ctx : miniContext
@@ -78,6 +80,7 @@ async def print_tc(ctx, typ, idx, tcs, op):
 
   await op(to_printA + to_printB + to_printC)
 
+
 async def get_inputs(ctx, inp):
   """Parses the input and returns the relevant values
 
@@ -94,7 +97,7 @@ async def get_inputs(ctx, inp):
     Contains important discord-related information
   inp : str
     Contains what the user typed
-  
+
   Returns
   ---------
   if the input is valid, returns the tuple (ok, typ, idx, name)
@@ -111,45 +114,46 @@ async def get_inputs(ctx, inp):
   """
 
   if not inp:
-    return 0,0,0,0
+    return 0, 0, 0, 0
   if len(inp[0]) < 2 or inp[0][:2] not in cnst.VALID_TYPES:
     await show_instructions(ctx)
-    return 0,0,0,0
-  
+    return 0, 0, 0, 0
+
   typ = inp[0][:2]
   try:
     idx = int(inp[0][2:])
   except ValueError:
     await show_instructions(ctx)
-    return 0,0,0,0
-  
+    return 0, 0, 0, 0
+
   if idx <= 0 or idx > cnst.LEN_TYP[typ]:
-    embed=discord.Embed(
-      title="No Testcases Yet", 
-      description="~ with the possible following reasons:", 
+    embed = discord.Embed(
+      title="No Testcases Yet",
+      description="~ with the possible following reasons:",
       color=0x709bff
     )
     embed.set_author(name="OJ Hacker")
     embed.add_field(
-      name="1. No one has solved it yet", 
-      value="So sad.", 
+      name="1. No one has solved it yet",
+      value="So sad.",
       inline=False
     )
     embed.add_field(
-      name="2. The problem does not exist.", 
-      value="Baka na-typo ka ser!", 
+      name="2. The problem does not exist.",
+      value="Baka na-typo ka ser!",
       inline=False
     )
     await ctx.channel.send(embed=embed)
-    return 0,0,0,0
-  
+    return 0, 0, 0, 0
+
   name = inp[1] if len(inp) > 1 else "no name"
 
   return True, typ, idx, name
 
+
 async def wait_response(bot, ctx, author):
   """Gets the response of the author.
-  
+
   Waits for the response of the original sender for a
   maximum of 2 minutes and returns it, if it exists.
 
@@ -161,10 +165,10 @@ async def wait_response(bot, ctx, author):
     Contains important discord-related information
   author : abc.User
     Contains discord information on the author
-  
+
   Returns
   ----------
-  If the user is able to send a message fast enough, returns 
+  If the user is able to send a message fast enough, returns
   a tuple (content, message)
   content : str
     The actual content of the message
@@ -179,7 +183,8 @@ async def wait_response(bot, ctx, author):
     if time.perf_counter() > end_time:
       break
   await ctx.channel.send("TLE :(")
-  return "",""
+  return "", ""
+
 
 async def wait_for_thumbs_up(ctx, bot):
   """Returns True if the intended user reacted a thumbs-up, Else otherwise"""
@@ -187,7 +192,7 @@ async def wait_for_thumbs_up(ctx, bot):
     return user == ctx.message.author and str(reaction.emoji) == cnst.THUMBS_UP_EMOJI
 
   try:
-    reaction, user = await bot.wait_for('reaction_add', timeout = 30, check = chk)
+    reaction, user = await bot.wait_for('reaction_add', timeout=30, check=chk)
     if reaction.emoji == cnst.THUMBS_UP_EMOJI:
       return True
   except Exception:
