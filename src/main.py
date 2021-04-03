@@ -5,7 +5,7 @@ from discord.ext import commands
 import asyncio
 
 import testcases as tc
-import generators as gen
+import _generators as gen
 import constants as cnst
 import auxi as aux
 import images

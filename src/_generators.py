@@ -1,5 +1,5 @@
 import random
-import solutions
+import _solutions
 
 randNames = [
     'William', 'Elijah', 'James', 'Benjamin', 'Lucas',
