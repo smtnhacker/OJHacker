@@ -190,5 +190,5 @@ async def wait_for_thumbs_up(ctx, bot):
     reaction, user = await bot.wait_for('reaction_add', timeout = 30, check = chk)
     if reaction.emoji == cnst.THUMBS_UP_EMOJI:
       return True
-  except:
+  except Exception:
     return False

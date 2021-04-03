@@ -80,7 +80,7 @@ def delete_entry(uid):
         db[typ] = temp_db
         del db[uid]
         return True 
-  except:
+  except Exception:
     print(f"Can't find {uid} in UID Database")
     found = False
     for typ in ['LE','PA']:
@@ -106,7 +106,7 @@ def delete_entry(uid):
 def get_entry(uid):
   try:
     typ, idx = db[uid]
-  except:
+  except Exception:
     print(f"Test case with UID {uid} has no typ or idx.")
     return
   try:
@@ -116,7 +116,7 @@ def get_entry(uid):
         io = x
         break
     return typ, idx, io
-  except:
+  except Exception:
     print(f"Cannot access problem {uid} but it exists.")
     return
 

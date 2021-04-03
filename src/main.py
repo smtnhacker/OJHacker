@@ -33,7 +33,7 @@ async def on_message(msg):
       ctx = MiniContext(msg)
       await penge_tc(ctx)
       return
-    except:
+    except Exception:
       print(f"Error at trying !pt\n{ctx}")
   elif msg.content.startswith('!pr'):
     try:
@@ -41,7 +41,7 @@ async def on_message(msg):
       ctx = MiniContext(msg)
       await penge_random(ctx)
       return
-    except:
+    except Exception:
       print(f"Error at trying !pr\n{ctx}")
   elif msg.content.startswith('!skl'):
     try:
@@ -49,7 +49,7 @@ async def on_message(msg):
       ctx = MiniContext(msg)
       await share_ko_lang(ctx)
       return
-    except:
+    except Exception:
       print(f"Error at trying !skl\n{ctx}")
   elif msg.content.startswith('!it'):
     try:
@@ -57,7 +57,7 @@ async def on_message(msg):
       ctx = MiniContext(msg)
       await insert_tc(ctx)
       return
-    except:
+    except Exception:
       print(f"Error at trying !it\n{ctx}")
   elif msg.content.startswith('!tn'):
     try:
@@ -65,7 +65,7 @@ async def on_message(msg):
       ctx = MiniContext(msg)
       await tcs_nga(ctx)
       return
-    except:
+    except Exception:
       print(f"Error at trying !tn\n{ctx}")
  
   await bot.process_commands(msg)
@@ -180,7 +180,7 @@ async def penge_tc(ctx):
   try:
     msg = ctx.message.content
     author = ctx.message.author
-  except:
+  except Exception:
     print("Still error :(")
 
   inp = "".join(msg.split("!penge_tc ", 1)).split(maxsplit=1)
@@ -200,7 +200,7 @@ async def penge_tc(ctx):
     await aux.print_tc(ctx, typ, idx, tcs, author.dm_channel.send)
   try:
     await ctx.channel.send("DM SENT!")
-  except:
+  except Exception:
     await ctx["channel"].send("DM SENT!")
 
 # ========= RANDOM GENERATOR ========== #
@@ -260,7 +260,7 @@ async def share_ko_lang(ctx, uid):
 
   try:
     uid = int(uid)
-  except:
+  except Exception:
     await ctx.channel.send("Invalid UID. The syntax for sharing is:\n\
     `!share_ko_lang <uid>`\
     ")
@@ -268,7 +268,7 @@ async def share_ko_lang(ctx, uid):
   
   try:
     typ, idx, io = tc.get_entry(uid)
-  except:
+  except Exception:
     await ctx.channel.send("Problem not found. Please use a valid UID.")
     return
   
@@ -397,7 +397,7 @@ async def delete_problem(ctx):
     try:
       tc.delete_row(typ, idx)
       await ctx.channel.send(f"Successfully deleted {typ}{idx}.")
-    except:
+    except Exception:
       print(f"{typ}{idx} not found. Cannot be deleted")
   else:
     await msg.add_reaction('👌')
