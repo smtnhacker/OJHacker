@@ -318,25 +318,6 @@ async def tcs_nga(ctx):
   await ctx.channel.send(embed=embed)
 
 # ======= ADMIN COMMANDS ====== #
-
-async def has_role(ctx, user, role):
-  """Return True if the user has a role
-  
-  Parameter
-  -----------------
-  ctx : MiniContext
-    Contains relevant discord-related information
-  user : abc.User
-    Contains information on the user
-  role : not sure pa, basta sa discord
-    Contains information on the needed role
-  """
-
-  rl = discord.utils.get(ctx.guild.roles, name=role)
-  if rl in user.roles:
-    return True
-  return False
-
 @bot.command()
 @commands.has_any_role(*cnst.ADMIN_ROLES)
 async def delete_tc(ctx):
