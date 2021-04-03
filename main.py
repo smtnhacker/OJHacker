@@ -7,7 +7,7 @@ import asyncio
 import testcases as tc
 import generators as gen
 import constants as cnst
-import aux
+import auxi as aux
 import images
 
 bot = commands.Bot(command_prefix = "!")
