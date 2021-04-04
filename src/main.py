@@ -1,24 +1,22 @@
 # main.py
-import discord
-import os
-from discord.ext import commands
 import asyncio
+import os
 
-import testcases as tc
-import generators as gen
-import constants as cnst
+import discord
+from discord.ext import commands
+
 import auxi as aux
+import constants as cnst
+import generators as gen
 import images
+import testcases as tc
 
 bot = commands.Bot(command_prefix="!")
 client = discord.Client()
 
 # =========== SHORTHAND COMMANDS =========== #
-
-
 @bot.event
 async def on_message(msg):
-
   class MiniContext:
     """
     A discord.ext.commands.context.Context but with only message and channel as atrbitutes
@@ -257,7 +255,7 @@ async def penge_random(ctx):
 @bot.command()
 async def share_ko_lang(ctx, uid):
   """Sends the test case with a given UID.
-  
+
   Syntax:
     !penge_random <uid>
     !skl <uid>
@@ -270,20 +268,20 @@ async def share_ko_lang(ctx, uid):
     `!share_ko_lang <uid>`\
     ")
     return
-  
+
   try:
     typ, idx, io = tc.get_entry(uid)
   except Exception:
     await ctx.channel.send("Problem not found. Please use a valid UID.")
     return
-  
+
   await aux.print_tc(ctx, typ, idx, io, ctx.channel.send)
 
 # ========= Prints the available testcases ======= #
 @bot.command()
 async def tcs_nga(ctx):
   """Shows a list of all stored test case for a certain problem.
-  
+
   Syntax:
     !tcs_nga <LE/PA/MP><problem #>
     !tn <LE/PA/MP><problem #>
@@ -291,12 +289,12 @@ async def tcs_nga(ctx):
 
   msg = ctx.message.content
   inp = "".join(msg.split("!tcs_nga ", 1)).split(maxsplit=1)
-  
+
   is_ok, typ, idx, name = await aux.get_inputs(ctx,inp)
 
   if not is_ok:
     return
-  
+
   all_tc = tc.get_all(typ, idx)
   if not all_tc:
     await ctx.channel.send("There are no testcases.")
@@ -319,13 +317,14 @@ async def tcs_nga(ctx):
 
 # ======= ADMIN COMMANDS ====== #
 @bot.command()
+@commands.check(lambda ctx: getattr(ctx.guild, 'id', None) in cnst.ALLOWED_GUILDS)
 @commands.has_any_role(*cnst.ADMIN_ROLES)
 async def delete_tc(ctx):
   """Deletes the """
 
   msg = ctx.message.content
   inp = "".join(msg.split("!delete_tc ", 1)).split(maxsplit=1)
-  
+
   try:
     uid = int(inp[0])
   except ValueError:
@@ -333,7 +332,7 @@ async def delete_tc(ctx):
       `!delete_tc <uid>`\
     ")
     return
-  
+
   OJ_msg = f"There exists no test case with UID {uid}"
   ok = tc.delete_entry(uid)
   if ok:
@@ -343,6 +342,7 @@ async def delete_tc(ctx):
   await ctx.channel.send(OJ_msg)
 
 @bot.command()
+@commands.check(lambda ctx: getattr(ctx.guild, 'id', None) in cnst.ALLOWED_GUILDS)
 @commands.has_any_role(*cnst.ADMIN_ROLES)
 async def delete_problem(ctx):
   """UNDER CONSTRUCTION (kapag puno na database)"""
@@ -373,6 +373,7 @@ async def delete_problem(ctx):
     return
 
 @bot.command()
+@commands.check(lambda ctx: getattr(ctx.guild, 'id', None) in cnst.ALLOWED_GUILDS)
 @commands.has_any_role(*cnst.ADMIN_ROLES)
 async def HARD_RESET(ctx):
   """DELETES EVERYTHING. Use with caution."""
@@ -389,10 +390,11 @@ async def HARD_RESET(ctx):
   return
 
 @bot.command()
+@commands.check(lambda ctx: getattr(ctx.guild, 'id', None) in cnst.ALLOWED_GUILDS)
 @commands.has_any_role(*cnst.ADMIN_ROLES)
 async def PRINT_DB(ctx):
   """Sends all the stored test cases in a problem
-  
+
   Syntax:
   !PRINT_DB <LE/PA/MP><problem #>
   """
@@ -413,10 +415,11 @@ async def PRINT_DB(ctx):
     await aux.print_tc(ctx, typ, idx, tcs, ctx.channel.send)
 
 @bot.command()
+@commands.check(lambda ctx: getattr(ctx.guild, 'id', None) in cnst.ALLOWED_GUILDS)
 @commands.has_any_role(*cnst.ADMIN_ROLES)
 async def PRINT_ALL(ctx):
   """Prints all the stored test cases
-  
+
   Use with caution as large amount of data might be sent.
   """
 
@@ -426,7 +429,7 @@ async def PRINT_ALL(ctx):
       for tcs in tc.get_all(typ, idx):
         did_printed_smtn = True
         await aux.print_tc(ctx, typ, idx, tcs, ctx.channel.send)
-  
+
   if not did_printed_smtn:
     await ctx.channel.send("There are no test cases in the database")
 
@@ -436,8 +439,8 @@ async def penge_jowa(ctx):
   """For the bored people."""
   import random
   author = ctx.message.author
- 
-  await author.create_dm() 
+
+  await author.create_dm()
   OJ_msg = "Waifu Sent!"
   rt = random.randint(1,len(images.img_lst))
   rd = random.randint(1,1000)
@@ -475,4 +478,4 @@ async def penge_jowa(ctx):
     await author.dm_channel.send(embed=embid)
     await ctx.channel.send(OJ_msg)
 
-bot.run(os.getenv('TOKEN')) 
+bot.run(os.getenv('TOKEN'))
