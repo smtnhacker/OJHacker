@@ -14,14 +14,16 @@ def insert_testcase(uid, typ, idx, name, tc_in, tc_out):
     The unique identification number of the test case
   typ : str
     Can either be "LE", "PA", or "MP" and tells the type of problem
-  idx : int
-    The problem number. It should be typecasted to str (for some reason related sa db)
+  idx : Union[str, int]
+    The problem number. It should be a positive integer.
   name : str
     The label / description for the inserted test case
   tc_in, tc_out : str
     Contains information on the test cases
   """
   idx = str(idx)
+  if not idx.is_digit():
+    print(f"Invalid idx ({idx}) value.")
 
   if typ not in db.keys():
     print(f"ADDING {typ} TO DB")
@@ -78,8 +80,8 @@ def delete_entry(uid):
   try:
     typ, idx = db[uid]
     print(f"AT {typ}{idx}")
-    for i in range(len(db[typ][idx])):
-      if db[typ][idx][i][3] == uid:
+    for i, problem in enumerate(db[typ][idx]):
+      if problem[i][3] == uid:
         temp_db = db[typ]
         del temp_db[idx][i]
         db[typ] = temp_db
@@ -87,25 +89,20 @@ def delete_entry(uid):
         return True
   except Exception:
     print(f"Can't find {uid} in UID Database")
-    found = False
     for typ in ['LE', 'PA']:
+      if typ not in db.keys():
+        continue
+      temp_db = db[typ]
       for idx in range(9):
-        if typ not in db.keys():
-          continue
-        temp_db = db[typ]
         if str(idx) not in temp_db:
           continue
         print(typ, idx, temp_db[str(idx)])
         print(type(uid))
-        for i in range(len(temp_db[str(idx)])):
-          x = temp_db[str(idx)][i]
-          if x[3] == uid:
-            del temp_db[str(idx)][i]
-            found = True
-          if found:
+        for i, problem in enumerate(temp_db[str(idx)]):
+          if problem[i][3] == uid:
+            del problem[i]
             db[typ] = temp_db
             return True
-    return False
   return False
 
 
