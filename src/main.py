@@ -118,7 +118,10 @@ RANDOMERS = {
     non,
     gen.genLE07,
     gen.genLE08,
-    gen.genLE09
+    gen.genLE09,
+    non,
+    non,
+    non
   ],
   "PA": [
     non,
@@ -127,7 +130,10 @@ RANDOMERS = {
     non,
     gen.genPA04,
     gen.genPA05,
-    gen.genPA06
+    gen.genPA06,
+    non,
+    non,
+    non
   ],
   "MP": [
     non,
