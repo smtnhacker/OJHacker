@@ -157,7 +157,7 @@ async def penge_tc(ctx):
 
   inp = "".join(msg.split("!penge_tc ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, _name = await utils.get_inputs(ctx, inp)
+  is_ok, typ, idx, _ = await utils.get_inputs(ctx, inp)
 
   if not is_ok:
     return
@@ -190,7 +190,7 @@ async def penge_random(ctx):
 
   inp = "".join(msg.split("!penge_random ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, _name = await utils.get_inputs(ctx, inp)
+  is_ok, typ, idx, _ = await utils.get_inputs(ctx, inp)
 
   if not is_ok:
     return
@@ -254,7 +254,7 @@ async def tcs_nga(ctx):
   msg = ctx.message.content
   inp = "".join(msg.split("!tcs_nga ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, _name = await utils.get_inputs(ctx,inp)
+  is_ok, typ, idx, _ = await utils.get_inputs(ctx,inp)
 
   if not is_ok:
     return
@@ -284,8 +284,6 @@ async def tcs_nga(ctx):
 @commands.check(lambda ctx: getattr(ctx.guild, 'id', None) in cnst.ALLOWED_GUILDS)
 @commands.has_any_role(*cnst.ADMIN_ROLES)
 async def delete_tc(ctx):
-  """Deletes the """
-
   msg = ctx.message.content
   inp = "".join(msg.split("!delete_tc ", 1)).split(maxsplit=1)
 
