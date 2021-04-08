@@ -6,6 +6,7 @@ The aim of this package is to provide an interface for the bot to generate rando
 ```python
 import random
 from .names import randNames # IF NAMES ARE TO BE GENERATED
+from .locations import locations # IF LOCATIONS ARE TO BE GENERATED
 
 def typeNum(checker):
     '''

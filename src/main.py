@@ -208,6 +208,7 @@ async def penge_random(ctx):
       rand2 = "``` ```"
   except Exception as e:
     print(f"Tried to create random for {typ}{idx}.")
+    print(f"Error:\n{e}")
     OJ_msg = "Sorry! There is no generator for that problem yet. Please contact the mods."
     rand, rand2 = non()
 
