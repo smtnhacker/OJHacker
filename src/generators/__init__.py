@@ -1,11 +1,14 @@
 # LEs
 from .genLE09 import le09
+from .genLE10 import le10
+from .genLE11 import le11
 from .genLE12 import le12
 
 #PAs
 from .genPA04 import pa04
 from .genPA05 import pa05
 from .genPA06 import pa06
+from .genPA07 import pa07
 from .genPA08 import pa08
 
 def none(checker = ""):
@@ -27,7 +30,7 @@ class TCGenerator:
             pa04, # PA04 - Podium Finish
             pa05, # PA05 - Goo Goo Ga Ga
             pa06, # PA06 - Carpet Laying
-            none, # PA07 - Is there an error?
+            pa07, # PA07 - Is there an error?
             pa08, # PA08 - P.I.
             none, # PA09 - Spaced Repetition
         ],
@@ -48,8 +51,8 @@ class TCGenerator:
             none, # LE07 - Student Council
             none, # LE08 - Simplifying Directions
             le09, # LE09 - Spatial Scanner
-            none, # LE10 - Pyramid Scheme
-            none, # LE11 - Converge to Self
+            le10, # LE10 - Pyramid Scheme
+            le11, # LE11 - Converge to Self
             le12, # LE12 - Domain Expansion
         ]
     }
@@ -66,11 +69,8 @@ class TCGenerator:
                 solutions.pa04,
                 solutions.pa05,
                 solutions.pa06,
-                none,
+                solutions.pa07,
                 solutions.pa08,
-                none,
-                none,
-                none,
                 none,
             ],
 
@@ -85,8 +85,8 @@ class TCGenerator:
                 none,
                 none,
                 solutions.le09,
-                none,
-                none,
+                solutions.le10,
+                solutions.le11,
                 solutions.le12,
             ],
 
