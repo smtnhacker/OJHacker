@@ -1,5 +1,8 @@
 import random
-import _solutions
+try:
+  import mock_solutions as solutions
+except Exception as e:
+  import solutions
 
 randNames = [
     'William', 'Elijah', 'James', 'Benjamin', 'Lucas',

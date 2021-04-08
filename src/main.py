@@ -5,7 +5,8 @@ from discord.ext import commands
 import asyncio
 
 import testcases as tc
-import _generators as gen
+import generators as gen
+import solutions as ans
 import constants as cnst
 import auxi as aux
 import images
@@ -95,39 +96,7 @@ async def start(ctx):
 def non():
   return ("Cannot generate random test case. :((", "pogi si gab, pero hakdog.")
 
-PARSERS = {
-  "LE" : [],
-  "PA" : [],
-  "MP" : [],
-}
-
-RANDOMERS = {
-  "LE" : [
-    non,
-    non,
-    non,
-    non,
-    non,
-    non,
-    non,
-    gen.genLE07,
-    gen.genLE08,
-    gen.genLE09
-  ],
-  "PA" : [
-    non,
-    non,
-    non,
-    non,
-    gen.genPA04,
-    gen.genPA05,
-    gen.genPA06
-  ],
-  "MP" : [
-    non,
-    non
-  ],
-}
+RANDOMERS = gen.TCGenerator(ans)
 
 # ======= FOR INSERTING TEST CASES =========== #
 @bot.command()
@@ -227,8 +196,7 @@ async def penge_random(ctx):
   OJ_msg = "DM Sent!"
   rand, rand2 = non()
   try:
-    f = RANDOMERS[typ][idx]
-    tc, ans_tc = f()
+    tc, ans_tc = RANDOMERS.create(typ, idx)
 
     if tc:
       rand = "TEST CASE\n```python\n" + tc + "```"
@@ -238,9 +206,7 @@ async def penge_random(ctx):
       rand2 = "ANSWER\n```python\n" + ans_tc + "```"
     else:
       rand2 = "``` ```"
-    if f == non:
-      OJ_msg = "Sorry! There is no generator for that problem yet. Please contact the mods."
-  except IndexError:
+  except Exception as e:
     print(f"Tried to create random for {typ}{idx}.")
     OJ_msg = "Sorry! There is no generator for that problem yet. Please contact the mods."
     rand, rand2 = non()
@@ -517,4 +483,4 @@ async def penge_jowa(ctx):
     await author.dm_channel.send(embed=embid)
     await ctx.channel.send(OJ_msg)
 
-bot.run(os.getenv('TOKEN')) 
+bot.run(os.getenv('TOKEN'))

@@ -2,8 +2,10 @@
 
 The functions that interacts with replit's builtin database named "db".
 """
-
-from replit import db
+try:
+  from replit import db
+except Exception as e:
+  from mock_replit import db
 
 def insert_testcase(uid, typ, idx, name, tc_in, tc_out):
   """Inserts the test case into the database.
