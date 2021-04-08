@@ -1,8 +1,8 @@
 """
-    Auxillary Functions
+Auxillary Functions
 
-    All of the functions used by the bot, but are not directly bot
-    commands or server functions are stored here.
+All of the functions used by the bot, but are not directly bot
+commands or server functions are stored here.
 """
 
 from .get_inputs import *

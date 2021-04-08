@@ -9,7 +9,7 @@ import testcases as tc
 import generators as gen
 import solutions as ans
 import constants as cnst
-import auxi as aux
+import utils
 import images
 
 bot = commands.Bot(command_prefix="!")
@@ -95,7 +95,7 @@ async def start(ctx):
   emojs = ['🧠', '👀', '🏆', '🥺', '🤟', '🎓']
   for zzz in emojs:
     await msg.add_reaction(zzz)
-  await ctx.channel.send(aux.show_instructions())
+  await ctx.channel.send(utils.show_instructions())
 
 
 def non():
@@ -106,7 +106,8 @@ RANDOMERS = gen.TCGenerator(ans)
 # ======= FOR INSERTING TEST CASES =========== #
 @bot.command()
 async def insert_tc(ctx):
-  """Inserts a new test case into the system.
+  """
+  Inserts a new test case into the system.
 
   Syntax:
     !insert_tc <LE/PA/MP><problem #> <test case label>
@@ -118,21 +119,21 @@ async def insert_tc(ctx):
 
   inp = "".join(msg.split("!insert_tc ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, name = await aux.get_inputs(ctx, inp)
+  is_ok, typ, idx, name = await utils.get_inputs(ctx, inp)
 
   if not is_ok:
     return
 
   await ctx.channel.send("Please enter your input (w/o formatting)")
-  tc_input, _ = await aux.wait_response(bot, ctx, auth)
+  tc_input, _ = await utils.wait_response(bot, ctx, auth)
 
   await ctx.channel.send("Please enter your output (w/o formatting)")
-  tc_output, _ = await aux.wait_response(bot, ctx, auth)
+  tc_output, _ = await utils.wait_response(bot, ctx, auth)
 
   confirm_msg = await ctx.channel.send("Upload the testcase? (thumbs up)")
   await confirm_msg.add_reaction(cnst.THUMBS_UP_EMOJI)
 
-  tc_yes = await aux.wait_for_thumbs_up(ctx, bot)
+  tc_yes = await utils.wait_for_thumbs_up(ctx, bot)
   uid = tc.get_id()
 
   if tc_yes:
@@ -144,7 +145,8 @@ async def insert_tc(ctx):
 # ======== PANG-DM NG TEST CASES ========= #
 @bot.command()
 async def penge_tc(ctx):
-  """DMs all the stored test cases for a certain problem.
+  """
+  DMs all the stored test cases for a certain problem.
 
   Syntax:
     !penge_tc <LE/PA/MP><problem #>
@@ -156,7 +158,7 @@ async def penge_tc(ctx):
 
   inp = "".join(msg.split("!penge_tc ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, _name = await aux.get_inputs(ctx, inp)
+  is_ok, typ, idx, _name = await utils.get_inputs(ctx, inp)
 
   if not is_ok:
     return
@@ -168,7 +170,7 @@ async def penge_tc(ctx):
   if not all_tc:
     await author.dm_channel.send("There are no testcases.")
   for tcs in all_tc:
-    await aux.print_tc(ctx, typ, idx, tcs, author.dm_channel.send)
+    await utils.print_tc(ctx, typ, idx, tcs, author.dm_channel.send)
   try:
     await ctx.channel.send("DM SENT!")
   except Exception:
@@ -189,7 +191,7 @@ async def penge_random(ctx):
 
   inp = "".join(msg.split("!penge_random ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, _name = await aux.get_inputs(ctx, inp)
+  is_ok, typ, idx, _name = await utils.get_inputs(ctx, inp)
 
   if not is_ok:
     return
@@ -238,7 +240,7 @@ async def share_ko_lang(ctx, uid=None):
     await ctx.channel.send("Problem not found. Please use a valid UID.")
     return
 
-  await aux.print_tc(ctx, typ, idx, io, ctx.channel.send)
+  await utils.print_tc(ctx, typ, idx, io, ctx.channel.send)
 
 # ========= Prints the available testcases ======= #
 @bot.command()
@@ -253,7 +255,7 @@ async def tcs_nga(ctx):
   msg = ctx.message.content
   inp = "".join(msg.split("!tcs_nga ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, _name = await aux.get_inputs(ctx,inp)
+  is_ok, typ, idx, _name = await utils.get_inputs(ctx,inp)
 
   if not is_ok:
     return
@@ -313,7 +315,7 @@ async def delete_problem(ctx):
   msg = ctx.message.content
   inp = "".join(msg.split("!delete_problem ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, name = await aux.get_inputs(ctx,inp)
+  is_ok, typ, idx, name = await utils.get_inputs(ctx,inp)
 
   if not is_ok:
     print("NOT OKAY", is_ok, typ, idx, name)
@@ -323,7 +325,7 @@ async def delete_problem(ctx):
   await ctx.channel.send("WARNING! THIS FEATURE IS NOT YET TESTED.")
 
   await ctx.channel.send(f"Are you sure you want to delete {typ}{idx}? (y/n)".upper())
-  resp, msg = await aux.wait_response(bot,ctx,auth)
+  resp, msg = await utils.wait_response(bot,ctx,auth)
 
   if resp.lower() == 'y':
     try:
@@ -343,7 +345,7 @@ async def HARD_RESET(ctx):
 
   auth = ctx.message.author
   await ctx.channel.send(cnst.WIPE_MSG.upper())
-  resp, msg = await aux.wait_response(bot,ctx,auth)
+  resp, msg = await utils.wait_response(bot,ctx,auth)
 
   if resp.lower() == 'y':
     tc.erase_db()
@@ -365,7 +367,7 @@ async def PRINT_DB(ctx):
   msg = ctx.message.content
   inp = "".join(msg.split("!PRINT_DB ", 1)).split(maxsplit=1)
 
-  is_ok,typ,idx,name = await aux.get_inputs(ctx,inp)
+  is_ok,typ,idx,name = await utils.get_inputs(ctx,inp)
 
   if not is_ok:
     print("NOT OKAY", is_ok, typ, idx, name)
@@ -375,7 +377,7 @@ async def PRINT_DB(ctx):
   if not all_tc:
     await ctx.channel.send("There are no testcases.")
   for tcs in all_tc:
-    await aux.print_tc(ctx, typ, idx, tcs, ctx.channel.send)
+    await utils.print_tc(ctx, typ, idx, tcs, ctx.channel.send)
 
 @bot.command()
 @commands.check(lambda ctx: getattr(ctx.guild, 'id', None) in cnst.ALLOWED_GUILDS)
@@ -391,7 +393,7 @@ async def PRINT_ALL(ctx):
     for idx in range(1, cnst.LEN_TYP[typ]):
       for tcs in tc.get_all(typ, idx):
         did_printed_smtn = True
-        await aux.print_tc(ctx, typ, idx, tcs, ctx.channel.send)
+        await utils.print_tc(ctx, typ, idx, tcs, ctx.channel.send)
 
   if not did_printed_smtn:
     await ctx.channel.send("There are no test cases in the database")
