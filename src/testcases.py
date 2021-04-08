@@ -7,6 +7,7 @@ try:
 except Exception as e:
   from mock_replit import db
 
+
 def insert_testcase(uid, typ, idx, name, tc_in, tc_out):
   """Inserts the test case into the database.
 
@@ -36,7 +37,7 @@ def insert_testcase(uid, typ, idx, name, tc_in, tc_out):
     db[typ] = temp_db
     temp_db = db[typ]
     if idx not in temp_db.keys():
-      print(f"SHIIIIIIIIT. Database cannot insert {uid} {typ} {idx} {name}.")  
+      print(f"SHIIIIIIIIT. Database cannot insert {uid} {typ} {idx} {name}.")
     else:
       print("NICEEEEEEEEEEE. Testcase successfully inserted!")
   else:
@@ -45,23 +46,26 @@ def insert_testcase(uid, typ, idx, name, tc_in, tc_out):
     db[uid] = (typ, idx)
     db[typ] = temp_db
 
+
 def erase_db():
   keys = [*db.keys()]
   for x in keys:
     del db[x]
+
 
 def get_all(typ, idx):
   idx = str(idx)
   if typ not in db.keys():
     print(f"NO TYP {typ} in DB")
     return []
-  
+
   temp_db = db[typ]
   if idx not in temp_db.keys():
     print(f"NO IDX {idx} in {typ}")
     return []
-  
+
   return temp_db[idx]
+
 
 def get_id():
   if "id" not in db.keys():
@@ -69,6 +73,7 @@ def get_id():
   res = db["id"]
   db["id"] += 1
   return res
+
 
 def delete_entry(uid):
   print(*db.keys())
@@ -81,18 +86,18 @@ def delete_entry(uid):
         del temp_db[idx][i]
         db[typ] = temp_db
         del db[uid]
-        return True 
-  except:
+        return True
+  except Exception:
     print(f"Can't find {uid} in UID Database")
     found = False
-    for typ in ['LE','PA']:
+    for typ in ['LE', 'PA']:
       for idx in range(9):
         if typ not in db.keys():
           continue
         temp_db = db[typ]
         if str(idx) not in temp_db:
           continue
-        print(typ,idx,temp_db[str(idx)])
+        print(typ, idx, temp_db[str(idx)])
         print(type(uid))
         for i in range(len(temp_db[str(idx)])):
           x = temp_db[str(idx)][i]
@@ -105,10 +110,11 @@ def delete_entry(uid):
     return False
   return False
 
+
 def get_entry(uid):
   try:
     typ, idx = db[uid]
-  except:
+  except Exception:
     print(f"Test case with UID {uid} has no typ or idx.")
     return
   try:
@@ -118,9 +124,10 @@ def get_entry(uid):
         io = x
         break
     return typ, idx, io
-  except:
+  except Exception:
     print(f"Cannot access problem {uid} but it exists.")
     return
+
 
 def delete_row(typ, idx):
   try:
@@ -129,5 +136,5 @@ def delete_row(typ, idx):
       del db[x[3]]
     del temp_db[idx]
     db[db] = temp_db
-  except:
+  except Exception:
     raise IndexError
