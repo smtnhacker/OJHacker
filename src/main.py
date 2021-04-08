@@ -94,7 +94,7 @@ async def start(ctx):
   emojs = ['🧠', '👀', '🏆', '🥺', '🤟', '🎓']
   for zzz in emojs:
     await msg.add_reaction(zzz)
-  await aux.show_instructions(ctx)
+  await ctx.channel.send(aux.show_instructions())
 
 
 def non():
@@ -194,7 +194,7 @@ async def penge_tc(ctx):
 
   inp = "".join(msg.split("!penge_tc ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, name = await aux.get_inputs(ctx, inp)
+  is_ok, typ, idx, _name = await aux.get_inputs(ctx, inp)
 
   if not is_ok:
     return
@@ -227,7 +227,7 @@ async def penge_random(ctx):
 
   inp = "".join(msg.split("!penge_random ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, name = await aux.get_inputs(ctx, inp)
+  is_ok, typ, idx, _name = await aux.get_inputs(ctx, inp)
 
   if not is_ok:
     return
@@ -259,17 +259,14 @@ async def penge_random(ctx):
 
 # ======== Share mo lang yung tc sa channel ====== #
 @bot.command()
-async def share_ko_lang(ctx, uid):
+async def share_ko_lang(ctx, uid=None):
   """Sends the test case with a given UID.
 
   Syntax:
     !penge_random <uid>
     !skl <uid>
   """
-
-  try:
-    uid = int(uid)
-  except Exception:
+  if not uid:
     await ctx.channel.send("Invalid UID. The syntax for sharing is:\n\
     `!share_ko_lang <uid>`\
     ")
@@ -296,7 +293,7 @@ async def tcs_nga(ctx):
   msg = ctx.message.content
   inp = "".join(msg.split("!tcs_nga ", 1)).split(maxsplit=1)
 
-  is_ok, typ, idx, name = await aux.get_inputs(ctx,inp)
+  is_ok, typ, idx, _name = await aux.get_inputs(ctx,inp)
 
   if not is_ok:
     return
