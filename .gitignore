@@ -5,3 +5,5 @@ mock_*.md
 .env
 env/
 .vs/
+mock_*.c
+mock_*.exe
