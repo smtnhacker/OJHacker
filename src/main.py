@@ -18,6 +18,7 @@ async def on_ready():
 @bot.command()
 async def start(ctx):
 	"""Shows the instructions. Try it!"""
+	
 	msg = await ctx.channel.send(file=discord.File('hacker.png'))
 	emojs = ['🧠', '👀', '🏆', '🥺', '🤟', '🎓']
 	for zzz in emojs:
