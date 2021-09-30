@@ -7,19 +7,19 @@ import solutions as ans
 import constants as cnst
 import utils
 
+RANDOMERS = gen.TCGenerator(ans)
+
 class OJCog(commands.Cog, name = 'oj'):
     def __init__(self, bot):
         self.bot = bot
     
-    RANDOMERS = gen.TCGenerator(ans)
-
     @staticmethod
     def non():
 	    return ("Cannot generate random test case. :((", "pogi si gab, pero hakdog.")
 
     # ======= FOR INSERTING TEST CASES =========== #
     @commands.command(aliases = ['it'])
-    async def insert_tc(self, ctx):
+    async def insert_tc(self, ctx, inp, *name):
         """
         Inserts a new test case into the system.
 
@@ -30,10 +30,9 @@ class OJCog(commands.Cog, name = 'oj'):
 
         msg = ctx.message.content
         auth = ctx.message.author
+        name = ' '.join(name)
 
-        inp = "".join(msg.split("!insert_tc ", 1)).split(maxsplit=1)
-
-        is_ok, typ, idx, name = await utils.get_inputs(ctx, inp)
+        is_ok, typ, idx, name = await utils.get_inputs(ctx, inp, name)
 
         if not is_ok:
             return
@@ -58,7 +57,7 @@ class OJCog(commands.Cog, name = 'oj'):
 
     # ======== PANG-DM NG TEST CASES ========= #
     @commands.command(aliases = ['ptc'])
-    async def penge_tc(self, ctx):
+    async def penge_tc(self, ctx, inp):
         """
         DMs all the stored test cases for a certain problem.
 
@@ -69,8 +68,6 @@ class OJCog(commands.Cog, name = 'oj'):
 
         msg = ctx.message.content
         author = ctx.message.author
-
-        inp = "".join(msg.split("!penge_tc ", 1)).split(maxsplit=1)
 
         is_ok, typ, idx, _ = await utils.get_inputs(ctx, inp)
 
@@ -92,7 +89,7 @@ class OJCog(commands.Cog, name = 'oj'):
 
     # ========= RANDOM GENERATOR ========== #
     @commands.command(aliases = ['pr'])
-    async def penge_random(self, ctx):
+    async def penge_random(self, ctx, inp):
         """DMs a randomly generated test case with the correct output.
 
         Syntax:
@@ -102,8 +99,6 @@ class OJCog(commands.Cog, name = 'oj'):
 
         msg = ctx.message.content
         author = ctx.message.author
-
-        inp = "".join(msg.split("!penge_random ", 1)).split(maxsplit=1)
 
         is_ok, typ, idx, _ = await utils.get_inputs(ctx, inp)
 

@@ -1,9 +1,9 @@
 import discord
 
 import constants as cnst
-from . import show_instructions
+from .show_instructions import show_instructions
 
-async def get_inputs(ctx, inp):
+async def get_inputs(ctx, inp, name='no name'):
 	"""Parses the input and returns the relevant values
 
 	Checks if the input is of the form:
@@ -37,14 +37,14 @@ async def get_inputs(ctx, inp):
 
 	if not inp:
 		return 0,0,0,0
-	if len(inp[0]) < 2 or inp[0][:2] not in cnst.VALID_TYPES:
-		print(inp[0])
+	if len(inp) < 2 or inp[:2] not in cnst.VALID_TYPES:
+		print(inp)
 		await show_instructions(ctx)
 		return 0,0,0,0
 	
-	typ = inp[0][:2]
+	typ = inp[:2]
 	try:
-		idx = int(inp[0][2:])
+		idx = int(inp[2:])
 	except ValueError:
 		await show_instructions(ctx)
 		return 0,0,0,0
@@ -68,7 +68,5 @@ async def get_inputs(ctx, inp):
 		)
 		await ctx.channel.send(embed=embed)
 		return 0,0,0,0
-	
-	name = inp[1] if len(inp) > 1 else "no name"
 
 	return True, typ, idx, name
