@@ -1,4 +1,6 @@
-def show_instructions():
+import discord
+
+async def show_instructions(ctx):
     """
     Prints the instructions to the channel using an embed
     """
@@ -38,4 +40,5 @@ def show_instructions():
         value="!insert_tc PA05 test",
         inline=False,
     )
-    return embed
+
+    await ctx.send(embed=embed)

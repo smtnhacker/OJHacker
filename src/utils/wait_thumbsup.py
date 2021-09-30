@@ -1,4 +1,4 @@
-from .. import constants as cnst
+import constants as cnst
 
 async def wait_for_thumbs_up(ctx, bot):
     """Returns True if the intended user reacted a thumbs-up, Else otherwise"""
