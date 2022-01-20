@@ -1,0 +1,7 @@
+*.pyc
+__pycache__
+mock_*.py
+mock_*.md
+.env
+env/
+.vs/
